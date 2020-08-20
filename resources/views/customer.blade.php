@@ -3,20 +3,38 @@
 <h1>Costumer</h1>
 
 <form action="customer" method='POST'>
-		<div>
-		<input type= "text" name= "name">
-		</div>
-		<button type="submit"> Add customer </button>
+		<input type= "text"  name= "name" placeholder="Enter Customer Name" required >
+		<button type="submit"class="btn btn-success"> Add customer </button>
 		@csrf
-
-
 		</form>
+		<p></p>
 
-	<?php
+		@foreach ($customer as $customer )
+			<table style="">
+				<tr>
+					
+				
+					<th width="200px">
+					 {{$customer->name}}
+					</th>
+					<th>
+						<a class="btn btn-xs  btn-secondary" href="editcustomer/{{$customer->id}}">Edit Customers</a>
+					</th>
 
-		foreach ($customer as $customer ) {
-			echo '<li>'. $customer->name. '</li>';
-		}
+					<th>
+						<a class="btn btn-xs  btn-danger" href="deletecustomer/{{$customer->id}}">Delete Customers</a>
+					</th>
 
-	?>
+					
+
+			
+				</tr>	
+			</table>
+
+
+
+		@endforeach
+	
+
+	
 @endsection

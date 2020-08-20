@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/welcome', function () {
+    return view('welcome');
 
+
+});
 
 
 Route::get('/', function () {
@@ -36,3 +40,9 @@ Route::get('customer', 'CustomerController@list');
 
 
 Route::post('customer', 'CustomerController@store');
+
+
+Route::get('/editcustomer/{id}', 'CustomerController@edit');
+
+// Route::get('/deletecustomer','CustomerController@destroy');
+Route::get('deletecustomer/{id}', 'CustomerController@deleteUser');
