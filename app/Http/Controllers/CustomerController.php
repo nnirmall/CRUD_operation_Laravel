@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 
 class CustomerController extends Controller
+
 {
     public function list()
     {
@@ -17,11 +18,6 @@ class CustomerController extends Controller
 
     public function store()
     {
-    	// $data = request()->validate([
-    	// 	'name'=> 'required|min:3'
-    
-    	// ]);
-
 		$customer= new Customer();
 		$customer->name = request('name');
 		$customer->save();
@@ -29,16 +25,13 @@ class CustomerController extends Controller
 		return back();
     }
 
-    public function edit()
+    public function edit($id)
     {
-  		// $customer = Customer::find($id);
-  		// $customer->update($requ->all());
-		return view('editcustomer');
+  		$customer = Customer::find($id);
+		return view('editcustomer',compact('customer'));
 	}
 
-
-
-	public function deleteUser($id)
+	public function deleteUser(Request $request, $id)
 	{
 		$customer = Customer::find($id);
 
@@ -47,11 +40,21 @@ class CustomerController extends Controller
 		
 	}
 
-	 public function update() {
+	public function update(Request $request) {
+		// dd($request->all());
+	 	$request->validate([
+            'name'   =>  'required'
+          
+        ]);
+        $data= ['name'=> $request->name];
+       	
+        Customer::find($request->id)->update($data);
 
-    
-          $customer->update($request->all());
-
-          return redirect('customer');
+         return redirect('customer');
      }
+
+	public function about()
+	{
+		return view('about');
+	}
 }
