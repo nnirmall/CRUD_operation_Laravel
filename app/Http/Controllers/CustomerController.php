@@ -16,11 +16,25 @@ class CustomerController extends Controller
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
-		$customer= new Customer();
-		$customer->name = request('name');
-		$customer->save();
+    	$request->validate([
+    		'name' => 'required',
+    		'image' => 'required|image|mimes:jpg,jpeg,png,gif',
+    	]);
+    	$image = $request->file('image');
+    	$image_name = rand(). '.'.$image->getClientOriginalExtension();
+		$image->move(public_path('images'),$image_name);
+
+    	$formDate = array(
+    		'name' => $request->name,
+    		'image' => $image_name
+    	);
+    	Customer::create($formDate);
+		// $customer= new Customer();
+		// $customer->image = request('image');
+		// $customer->name = request('name');
+		// $customer->save();
 
 		return back();
     }
@@ -40,16 +54,27 @@ class CustomerController extends Controller
 		
 	}
 
+
 	public function update(Request $request) {
 		// dd($request->all());
 	 	$request->validate([
-            'name'   =>  'required'
+            'name'   =>  'required',
+            'image' => 'required'
           
         ]);
-        $data= ['name'=> $request->name];
+        
+        $image_name = $request->hidden_image;
+       	$image = $request->file('image');
+    	$image_name = rand(). '.'.$image->getClientOriginalExtension();
+		$image->move(public_path('images'),$image_name);
+
+        $data= ['name'=> $request->name,
+        		'image'=>$image_name
+
+
+    	];
        	
         Customer::find($request->id)->update($data);
-
          return redirect('customer');
      }
 
